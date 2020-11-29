@@ -140,8 +140,7 @@ If MsgBox($MB_YESNO + $MB_ICONQUESTION + $MB_TOPMOST, $Title, "Run on startup?")
     '</Settings>' & @CRLF & _
     '<Actions Context="Author">' & @CRLF & _
     '  <Exec>' & @CRLF & _
-    '      <Command>cmd.exe</Command>' & @CRLF & _
-    '      <Arguments>/c start "" "' & $InstallDir & '\' & $Name & '.exe"</Arguments>' & @CRLF & _
+    '      <Command>"' & $InstallDir & '\' & $Name & '.exe"</Command>' & @CRLF & _
     '  </Exec>' & @CRLF & _
     '</Actions>' & @CRLF & _
     '</Task>'

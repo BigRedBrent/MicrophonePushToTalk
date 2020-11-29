@@ -13,6 +13,7 @@ Local $SettingsDir = @AppDataDir & "\" & $Name
 #include <GUIConstantsEx.au3>
 #Include <Constants.au3>
 #include <WinAPIFiles.au3>
+#include <TrayConstants.au3>
 #include "_Beep.au3"
 #include "_OpenSoundControlPanel.au3"
 FileChangeDir(@ScriptDir)
@@ -33,6 +34,7 @@ TrayItemSetOnEvent($BeepVolumeTrayItem, "SetBeepVolume")
 If Not $BeepSounds Then TrayItemSetState($BeepVolumeTrayItem, $TRAY_DISABLE)
 TrayCreateItem("")
 TrayItemSetOnEvent(TrayCreateItem("Exit"), "ExitScript")
+TraySetOnEvent($TRAY_EVENT_PRIMARYDOUBLE, "OpenSoundControlPanel")
 TraySetToolTip($Title)
 Local $Volume = 65536, $Percent = IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "MicVolume", ""), $HotKey = IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "HotKey", ""), $BeepVolume = IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "BeepVolume", "")
 
