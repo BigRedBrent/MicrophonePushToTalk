@@ -2,10 +2,10 @@
 This will allow you to set up a hot key to unmute your mic when pressed.
 
 **You can download the installer here:**  
-https://github.com/BigRedBrent/MicrophonePushToTalk/raw/master/MicrophonePushToTalk.exe
+https://github.com/BigRedBrent/MicrophonePushToTalk/raw/main/MicrophonePushToTalk.exe
 
 Find the latest list of changes here:  
-https://github.com/BigRedBrent/MicrophonePushToTalk/blob/master/CHANGELOG.md
+https://github.com/BigRedBrent/MicrophonePushToTalk/blob/main/CHANGELOG.md
 
 Please post your questions or requests for this script here:  
 https://github.com/BigRedBrent/MicrophonePushToTalk/issues
