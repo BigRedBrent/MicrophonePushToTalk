@@ -105,11 +105,12 @@ If MsgBox($MB_YESNO + $MB_ICONQUESTION + $MB_TOPMOST, $Title, "Run on startup?")
     '<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">' & @CRLF & _
     '<RegistrationInfo>' & @CRLF & _
     '  <Author>SYSTEM</Author>' & @CRLF & _
-    '  <URI>\Neverwinter Invoke Bot Start Up</URI>' & @CRLF & _
+    '  <URI>\' & $Name & '</URI>' & @CRLF & _
     '</RegistrationInfo>' & @CRLF & _
     '<Triggers>' & @CRLF & _
     '  <LogonTrigger>' & @CRLF & _
     '    <Enabled>true</Enabled>' & @CRLF & _
+    '    <Delay>PT30S</Delay>' & @CRLF & _
     '  </LogonTrigger>' & @CRLF & _
     '</Triggers>' & @CRLF & _
     '<Principals>' & @CRLF & _
@@ -139,8 +140,8 @@ If MsgBox($MB_YESNO + $MB_ICONQUESTION + $MB_TOPMOST, $Title, "Run on startup?")
     '</Settings>' & @CRLF & _
     '<Actions Context="Author">' & @CRLF & _
     '  <Exec>' & @CRLF & _
-    '      <Command>' & $InstallDir & '\' & $Name & '.exe' & '</Command>' & @CRLF & _
-    '      <Arguments></Arguments>' & @CRLF & _
+    '      <Command>cmd.exe</Command>' & @CRLF & _
+    '      <Arguments>/c start "" "' & $InstallDir & '\' & $Name & '.exe"</Arguments>' & @CRLF & _
     '  </Exec>' & @CRLF & _
     '</Actions>' & @CRLF & _
     '</Task>'
