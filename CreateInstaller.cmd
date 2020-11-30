@@ -1,8 +1,11 @@
 @ECHO OFF
-SET VERSION=1.0.1
+SET VERSION=1.1
 SET NAME=MicrophonePushToTalk
 SET INSTALLER=MicrophonePushToTalk
 SET EXE=%NAME%,Uninstall
+ECHO.
+ECHO Compiling: %NAME% v%VERSION%
+ECHO.
 
 (
     ECHO #include-once
@@ -16,7 +19,7 @@ SET EXE=%NAME%,Uninstall
 FOR %%i IN ("%EXE:,=" "%") DO "%ProgramFiles(x86)%\AutoIt3\Aut2Exe\Aut2exe.exe" /in ".\Install\%NAME%\%%~i.au3" /out ".\Install\%NAME%\%%~i.exe" /icon ".\Install\%NAME%\mic_off.ico" /comp 0 /nopack /x86 /gui
 "%ProgramFiles(x86)%\AutoIt3\Aut2Exe\Aut2exe.exe" /in .\Install\setup.au3 /out .\Install\setup.exe /comp 0 /nopack /x86 /gui
 
-DEL %INSTALLER%.exe
+IF EXIST %INSTALLER%.exe DEL %INSTALLER%.exe
 "%ProgramFiles%\7-Zip\7z.exe" a Installer.7z .\Install\* -r -x!Thumbs.db -x!ehthumbs.db -x!Desktop.ini -x!*.au3
 
 (

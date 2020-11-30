@@ -47,13 +47,33 @@ Func ExitScript()
     Exit ExitFunction()
 EndFunc
 
-Local $AllKeys = "Left mouse button|Right mouse button|Control-break processing|Middle mouse button|X1 mouse button|X2 mouse button|BACKSPACE|TAB|CLEAR|ENTER|SHIFT|CTRL|ALT|PAUSE|CAPS LOCK|ESC|SPACEBAR|PAGE UP|PAGE DOWN|END|HOME|LEFT ARROW|UP ARROW|RIGHT ARROW|DOWN ARROW|SELECT|PRINT|EXECUTE|PRINT SCREEN|INS|DEL" & _
-"|0|1|2|3|4|5|6|7|8|9|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" & _
-"|Left Windows|Right Windows|PopUp Menu Key|Numeric keypad 0|Numeric keypad 1|Numeric keypad 2|Numeric keypad 3|Numeric keypad 4|Numeric keypad 5|Numeric keypad 6|Numeric keypad 7|Numeric keypad 8|Numeric keypad 9" & _
-"|Multiply|Add|Separator|Subtract|Decimal|Divide|F1|F2|F3|F4|F5|F6|F7|F8|F9|F10|F11|F12|F13|F14|F15|F16|F17|F19|F19|F20|F21|F22|F23|F24" & _
-"|NUM LOCK|SCROLL LOCK|Left SHIFT|Right SHIFT|Left CONTROL|Right CONTROL|Left MENU|Right MENU|;|=|,|-|.|/|`|[|\|]"
+Local $AllKeys = "Left mouse button|Right mouse button|Control-break processing|Middle mouse button|X1 mouse button|X2 mouse button" & _
+"|BACKSPACE|TAB|CLEAR|ENTER|SHIFT|CTRL|ALT|PAUSE|CAPS LOCK|ESC|SPACEBAR|PAGE UP|PAGE DOWN|END|HOME" & _
+"|LEFT ARROW|UP ARROW|RIGHT ARROW|DOWN ARROW" & _
+"|SELECT|PRINT|EXECUTE|PRINT SCREEN|INS|DEL" & _
+"|0|1|2|3|4|5|6|7|8|9" & _
+"|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z" & _
+"|Left Windows|Right Windows|PopUp Menu Key" & _
+"|Numeric keypad 0|Numeric keypad 1|Numeric keypad 2|Numeric keypad 3|Numeric keypad 4|Numeric keypad 5|Numeric keypad 6|Numeric keypad 7|Numeric keypad 8|Numeric keypad 9" & _
+"|Multiply|Add|Separator|Subtract|Decimal|Divide" & _
+"|F1|F2|F3|F4|F5|F6|F7|F8|F9|F10|F11|F12" & _
+"|F13|F14|F15|F16|F17|F19|F19|F20|F21|F22|F23|F24" & _
+"|NUM LOCK|SCROLL LOCK|Left SHIFT|Right SHIFT|Left CONTROL|Right CONTROL|Left MENU|Right MENU" & _
+"|;|=|,|-|.|/|`|[|\|]"
 
-Local $AllKeyCodes = "01|02|03|04|05|06|08|09|0C|0D|10|11|12|13|14|1B|20|21|22|23|24|25|26|27|28|29|2A|2B|2C|2D|2E|30|31|32|33|34|35|36|37|38|39|41|42|43|44|45|46|47|48|49|4A|4B|4C|4D|4E|4F|50|51|52|53|54|55|56|57|58|59|5A|5B|5C|5D|60|61|62|63|64|65|66|67|68|69|6A|6B|6C|6D|6E|6F|70|71|72|73|74|75|76|77|78|79|7A|7B|7C|7D|7E|7F|80H|81H|82H|83H|84H|85H|86H|87H|90|91|A0|A1|A2|A3|A4|A5|BA|BB|BC|BD|BE|BF|C0|DB|DC|DD"
+Local $AllKeyCodes = "01|02|03|04|05|06" & _
+"|08|09|0C|0D|10|11|12|13|14|1B|20|21|22|23|24" & _
+"|25|26|27|28" & _
+"|29|2A|2B|2C|2D|2E" & _
+"|30|31|32|33|34|35|36|37|38|39" & _
+"|41|42|43|44|45|46|47|48|49|4A|4B|4C|4D|4E|4F|50|51|52|53|54|55|56|57|58|59|5A" & _
+"|5B|5C|5D" & _
+"|60|61|62|63|64|65|66|67|68|69" & _
+"|6A|6B|6C|6D|6E|6F" & _
+"|70|71|72|73|74|75|76|77|78|79|7A|7B" & _
+"|7C|7D|7E|7F|80H|81H|82H|83H|84H|85H|86H|87H" & _
+"|90|91|A0|A1|A2|A3|A4|A5" & _
+"|BA|BB|BC|BD|BE|BF|C0|DB|DC|DD"
 
 Local $AllKeysArray = StringSplit($AllKeys, "|")
 Local $AllKeyCodesArray = StringSplit($AllKeyCodes, "|")
@@ -178,7 +198,7 @@ EndFunc
 
 Func UnmuteMic()
     Run("NirCmd.exe  mutesysvolume 0 default_record", @ScriptDir, @SW_HIDE)
-    RunWait("NirCmd.exe setsysvolume " & $Volume & " default_record", @ScriptDir, @SW_HIDE)
+    Run("NirCmd.exe setsysvolume " & $Volume & " default_record", @ScriptDir, @SW_HIDE)
 EndFunc
 
 Func PushToTalk()
@@ -187,20 +207,21 @@ Func PushToTalk()
     UnmuteMic()
     TraySetIcon(@ScriptDir & "\mic_on.ico")
     If $BeepSounds Then _Beep(750, 100, $BeepVolume)
+    Sleep(10)
     While _IsPressed($HotKey_IsPressedCode, $hDLL)
         Sleep(10)
     WEnd
     MuteMic()
     TraySetIcon(@ScriptDir & "\mic_off.ico")
-    $KeyPressed = 0
     If $BeepSounds Then _Beep(400, 100, $BeepVolume)
+    $KeyPressed = 0
 EndFunc
 
 GetVolumeFromPercent()
 MuteMic()
 
 While 1
-    if _IsPressed($HotKey_IsPressedCode) Then PushToTalk()
+    if _IsPressed($HotKey_IsPressedCode, $hDLL) Then PushToTalk()
     Sleep(10)
 WEnd
 
