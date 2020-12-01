@@ -16,7 +16,6 @@ If _Singleton($Name & " Installer" & "346473046bWe46", 1) = 0 Then Exit MsgBox($
 #include <FileConstants.au3>
 Local $SettingsDir = @AppDataDir & "\" & $Name
 Local $Volume = 65536, $Percent = IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "MicVolume", "")
-
 Local $InstallDir = @ProgramFilesDir & "\" & $Name, $RegLocation = "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\" & $Name, $InstallLocation = StringRegExpReplace(RegRead($RegLocation, "InstallLocation"), "\\+$", "")
 
 Func GetInstallLocation($dir = $InstallDir)
@@ -92,11 +91,10 @@ While ProcessExists($Name & ".exe")
     RunWait(@ScriptDir & "\" & $Name & "\NirCmd.exe setsysvolume " & $Volume & " default_record", @ScriptDir & "\" & $Name, @SW_HIDE)
 WEnd
 
-
 If Not DirCopy($Name, $InstallDir, 1) Then Exit MsgBox($MB_ICONWARNING, $Title, "An error occurred while copying files to the programs folder!")
-
+DirCreate(@ProgramsCommonDir & "\" & $Name)
+FileCreateShortcut($InstallDir & "\" & $Name & ".exe", @ProgramsCommonDir & "\" & $Name & "\" & $Name & ".lnk", $InstallDir)
 If Not RegWrite($RegLocation, "DisplayName", "REG_SZ", $Name & " v" & $Version) Or Not RegWrite($RegLocation, "DisplayVersion", "REG_SZ", $Version) Or Not RegWrite($RegLocation, "Publisher", "REG_SZ", "BigRedBrent") Or Not RegWrite($RegLocation, "DisplayIcon", "REG_SZ", $InstallDir & "\Uninstall.exe") Or Not RegWrite($RegLocation, "UninstallString", "REG_SZ", '"' & $InstallDir & '\Uninstall.exe"') Or Not RegWrite($RegLocation, "InstallLocation", "REG_SZ", $InstallDir) Then Exit MsgBox($MB_ICONWARNING, $Title, "An error occurred while creating the uninstaller registry keys!")
-
 If Not RunWait('schtasks /query /tn "' & $Name & '"', "", @SW_HIDE) And RunWait('schtasks /delete /tn "' & $Name & '" /f', "", @SW_HIDE) Then Exit MsgBox($MB_ICONWARNING, $Title, "Failed to delete scheduled task!")
 
 If MsgBox($MB_YESNO + $MB_ICONQUESTION + $MB_TOPMOST, $Title, "Run on startup?") = $IDYES Then

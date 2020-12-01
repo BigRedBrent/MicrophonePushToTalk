@@ -1,6 +1,10 @@
 RELEASE NOTES
 =============
 
+1.1.1
+- Added small delay for consistency when Beep Sounds are disabled
+- Added shortcut in the start menu
+
 1.1
 - Removed delay between un-muting mic and indicators
 

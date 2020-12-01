@@ -3,6 +3,7 @@
 #include "..\variables.au3"
 Local $Title = $Name & " v" & $Version & " Uninstaller"
 #include <MsgBoxConstants.au3>
+If Not @Compiled Then Exit MsgBox($MB_ICONWARNING + $MB_TOPMOST, $Title, "The script must be a compiled exe to work correctly!")
 #include "_SelfDelete.au3"
 Local $SettingsDir = @AppDataDir & "\" & $Name
 Local $Volume = 65536, $Percent = IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "MicVolume", "")
@@ -50,6 +51,8 @@ Local $RegLocation = "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersi
 If ( RegRead($RegLocation, "DisplayName") <> "" Or RegRead($RegLocation, "DisplayVersion") <> "" Or RegRead($RegLocation, "Publisher") <> "" Or RegRead($RegLocation, "DisplayIcon") <> "" Or RegRead($RegLocation, "UninstallString") <> "" Or RegRead($RegLocation, "InstallLocation") <> "" ) And Not RegDelete($RegLocation) Then Exit MsgBox($MB_ICONWARNING, $Title, "Failed to delete uninstaller registry key!")
 
 If FileExists(@AppDataDir & "\" & $Name) And MsgBox($MB_YESNO + $MB_ICONQUESTION + $MB_TOPMOST, $Title, "Keep settings files?") <> $IDYES Then DirRemove(@AppDataDir & "\" & $Name, 1)
+
+DirRemove(@ProgramsCommonDir & "\" & $Name, 1)
 
 _SelfDelete(5, 1, 1)
 If @error Then Exit MsgBox($MB_ICONWARNING, "_SelfDelete()", "The script must be a compiled exe to work correctly.")

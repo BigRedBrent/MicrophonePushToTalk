@@ -193,7 +193,7 @@ EndFunc
 
 Func MuteMic()
     Run("NirCmd.exe  mutesysvolume 1 default_record", @ScriptDir, @SW_HIDE)
-    RunWait("NirCmd.exe setsysvolume 0 default_record", @ScriptDir, @SW_HIDE)
+    Run("NirCmd.exe setsysvolume 0 default_record", @ScriptDir, @SW_HIDE)
 EndFunc
 
 Func UnmuteMic()
@@ -206,14 +206,21 @@ Func PushToTalk()
     $KeyPressed = 1
     UnmuteMic()
     TraySetIcon(@ScriptDir & "\mic_on.ico")
-    If $BeepSounds Then _Beep(750, 100, $BeepVolume)
-    Sleep(10)
+    If $BeepSounds Then
+        _Beep(750, 100, $BeepVolume)
+    Else
+        Sleep(200)
+    EndIf
     While _IsPressed($HotKey_IsPressedCode, $hDLL)
         Sleep(10)
     WEnd
     MuteMic()
     TraySetIcon(@ScriptDir & "\mic_off.ico")
-    If $BeepSounds Then _Beep(400, 100, $BeepVolume)
+    If $BeepSounds Then
+        _Beep(400, 100, $BeepVolume)
+    Else
+        Sleep(200)
+    EndIf
     $KeyPressed = 0
 EndFunc
 
