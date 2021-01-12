@@ -121,7 +121,7 @@ If MsgBox($MB_YESNO + $MB_ICONQUESTION + $MB_TOPMOST, $Title, "Run on startup?")
     '  <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>' & @CRLF & _
     '  <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>' & @CRLF & _
     '  <StopIfGoingOnBatteries>true</StopIfGoingOnBatteries>' & @CRLF & _
-    '  <AllowHardTerminate>true</AllowHardTerminate>' & @CRLF & _
+    '  <AllowHardTerminate>false</AllowHardTerminate>' & @CRLF & _
     '  <StartWhenAvailable>false</StartWhenAvailable>' & @CRLF & _
     '  <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>' & @CRLF & _
     '  <IdleSettings>' & @CRLF & _
@@ -133,7 +133,7 @@ If MsgBox($MB_YESNO + $MB_ICONQUESTION + $MB_TOPMOST, $Title, "Run on startup?")
     '  <Hidden>false</Hidden>' & @CRLF & _
     '  <RunOnlyIfIdle>false</RunOnlyIfIdle>' & @CRLF & _
     '  <WakeToRun>false</WakeToRun>' & @CRLF & _
-    '  <ExecutionTimeLimit>PT72H</ExecutionTimeLimit>' & @CRLF & _
+    '  <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>' & @CRLF & _
     '  <Priority>7</Priority>' & @CRLF & _
     '</Settings>' & @CRLF & _
     '<Actions Context="Author">' & @CRLF & _

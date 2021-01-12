@@ -1,6 +1,9 @@
 RELEASE NOTES
 =============
 
+1.2
+- Removed execution time limit on startup
+
 1.1.1
 - Added small delay for consistency when Beep Sounds are disabled
 - Added shortcut in the start menu
