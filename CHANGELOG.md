@@ -1,6 +1,9 @@
 RELEASE NOTES
 =============
 
+1.4
+- Changed the icon colors
+
 1.3
 - Added a disable option
 

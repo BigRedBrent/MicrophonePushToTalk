@@ -1,5 +1,5 @@
 @ECHO OFF
-SET VERSION=1.3
+SET VERSION=1.4
 SET NAME=MicrophonePushToTalk
 SET INSTALLER=MicrophonePushToTalk
 SET EXE=%NAME%,Uninstall

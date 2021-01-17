@@ -262,8 +262,8 @@ While 1
             Sleep(10)
         WEnd
     EndIf
-    TraySetIcon(@ScriptDir & "\disabled.ico")
     UnmuteMic()
+    TraySetIcon(@ScriptDir & "\disabled.ico")
     While $Disabled
         Sleep(500)
     WEnd
