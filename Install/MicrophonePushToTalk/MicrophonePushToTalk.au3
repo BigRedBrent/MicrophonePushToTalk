@@ -20,31 +20,56 @@ FileChangeDir(@ScriptDir)
 AutoItSetOption("TrayAutoPause", 0)
 AutoItSetOption("TrayMenuMode", 3)
 AutoItSetOption("TrayOnEventMode", 1)
-TraySetIcon(@ScriptDir & "\mic_off.ico")
 TrayItemSetOnEvent(TrayCreateItem("Open Sound Control Panel"), "OpenSoundControlPanel")
 TrayItemSetOnEvent(TrayCreateItem("Set Hot Key"), "SelectHotKey")
 TrayItemSetOnEvent(TrayCreateItem("Set Mic Volume"), "SetVolume")
-$BeepSounds = 1
+Local $BeepSounds = 1
 If IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "BeepSounds", "") = "Off" Then $BeepSounds = 0
-$BeepSoundsTrayItem = TrayCreateItem("Beep Sounds")
+Local $BeepSoundsTrayItem = TrayCreateItem("Beep Sounds")
 TrayItemSetOnEvent($BeepSoundsTrayItem, "BeepSounds")
 If $BeepSounds Then TrayItemSetState($BeepSoundsTrayItem, $TRAY_CHECKED)
-$BeepVolumeTrayItem = TrayCreateItem("Set Beep Volume")
+Local $BeepVolumeTrayItem = TrayCreateItem("Set Beep Volume")
 TrayItemSetOnEvent($BeepVolumeTrayItem, "SetBeepVolume")
 If Not $BeepSounds Then TrayItemSetState($BeepVolumeTrayItem, $TRAY_DISABLE)
 TrayCreateItem("")
+Local $DisableItem = TrayCreateItem("Disable")
+TrayItemSetOnEvent($DisableItem, "Disable")
+TrayCreateItem("")
 TrayItemSetOnEvent(TrayCreateItem("Exit"), "ExitScript")
 TraySetOnEvent($TRAY_EVENT_PRIMARYDOUBLE, "OpenSoundControlPanel")
-TraySetToolTip($Title)
-Local $Volume = 65536, $Percent = IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "MicVolume", ""), $HotKey = IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "HotKey", ""), $BeepVolume = IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "BeepVolume", "")
+Local $Disabled = IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "Disabled", ""), $Volume = 65536, $Percent = IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "MicVolume", ""), $HotKey = IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "HotKey", ""), $BeepVolume = IniRead($SettingsDir & "\" & $Name & ".ini", "Settings", "BeepVolume", "")
 
 Func ExitFunction()
+    TraySetClick(0)
+    $Disabled = 1
+    Sleep(1000)
     UnmuteMic()
     DllClose($hDLL)
 EndFunc
 
 Func ExitScript()
     Exit ExitFunction()
+EndFunc
+
+If $Disabled = "True" Then
+    $Disabled = 1
+    TrayItemSetText($DisableItem, "Enable")
+Else
+    $Disabled = 0
+EndIf
+
+Func Disable()
+    If $Disabled Then
+        $Disabled = 0
+        TrayItemSetText($DisableItem, "Disable")
+        DirCreate($SettingsDir)
+        IniWrite($SettingsDir & "\" & $Name & ".ini", "Settings", "Disabled", "False")
+    Else
+        $Disabled = 1
+        TrayItemSetText($DisableItem, "Enable")
+        DirCreate($SettingsDir)
+        IniWrite($SettingsDir & "\" & $Name & ".ini", "Settings", "Disabled", "True")
+    EndIf
 EndFunc
 
 Local $AllKeys = "Left mouse button|Right mouse button|Control-break processing|Middle mouse button|X1 mouse button|X2 mouse button" & _
@@ -225,11 +250,23 @@ Func PushToTalk()
 EndFunc
 
 GetVolumeFromPercent()
-MuteMic()
+TraySetIcon(@ScriptDir & "\disabled.ico")
+TraySetToolTip($Title)
 
 While 1
-    if _IsPressed($HotKey_IsPressedCode, $hDLL) Then PushToTalk()
-    Sleep(10)
+    If Not $Disabled Then
+        MuteMic()
+        TraySetIcon(@ScriptDir & "\mic_off.ico")
+        While Not $Disabled
+            if _IsPressed($HotKey_IsPressedCode, $hDLL) Then PushToTalk()
+            Sleep(10)
+        WEnd
+    EndIf
+    TraySetIcon(@ScriptDir & "\disabled.ico")
+    UnmuteMic()
+    While $Disabled
+        Sleep(500)
+    WEnd
 WEnd
 
 ExitScript()

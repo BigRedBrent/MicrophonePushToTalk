@@ -1,6 +1,9 @@
 RELEASE NOTES
 =============
 
+1.3
+- Added a disable option
+
 1.2
 - Removed execution time limit on startup
 
